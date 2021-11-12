@@ -11,7 +11,7 @@ const FormExpenses = () => {
   const onFinish = (fieldValues: any) => {
     const values = {
       ...fieldValues,
-      dateExpenses: fieldValues["dateExpenses"].format(dateFormat),
+      dateExpenses: fieldValues.dateExpenses.format(dateFormat),
     };
     console.log(values);
     form.setFieldsValue({ amountMoney: null, descriptionExpenses: null });
