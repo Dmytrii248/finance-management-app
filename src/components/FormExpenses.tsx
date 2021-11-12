@@ -1,21 +1,19 @@
 import React from "react";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
+
+type FormValues = {
+  typeExpenses: string;
+  dateExpenses: Moment;
+  amountMoney: number;
+  descriptionExpenses: string | null;
+};
 
 const dateFormat = "DD-MM-YYYY";
 
 const FormExpenses = () => {
-  const [form] = Form.useForm();
-
-  const onFinish = (fieldValues: any) => {
-    const values = {
-      ...fieldValues,
-      dateExpenses: fieldValues.dateExpenses.format(dateFormat),
-    };
-    console.log(values);
-    form.setFieldsValue({ amountMoney: null, descriptionExpenses: null });
-  };
+  const [form] = Form.useForm<FormValues>();
 
   const layout = {
     labelCol: { span: 7 },
@@ -26,9 +24,18 @@ const FormExpenses = () => {
     width: 200,
   };
 
+  const onFinish = (fieldValues: FormValues) => {
+    const values = {
+      ...fieldValues,
+      dateExpenses: fieldValues.dateExpenses.format(dateFormat),
+    };
+    console.log(values);
+    form.setFieldsValue({ amountMoney: null, descriptionExpenses: null });
+  };
+
   return (
     <>
-      <Form
+      <Form<FormValues>
         {...layout}
         name="formExpenses"
         onFinish={onFinish}
@@ -36,12 +43,16 @@ const FormExpenses = () => {
         onFinishFailed={(errorInfo: any) =>
           console.log("Form not send", errorInfo)
         }
+        initialValues={{
+          typeExpenses: "income",
+          dateExpenses: moment(),
+          descriptionExpenses: null,
+        }}
       >
         <Form.Item
           label="Select type Expenses"
           name="typeExpenses"
           rules={[{ required: true, message: "Type Expenses is required" }]}
-          initialValue={"income"}
         >
           <Radio.Group>
             <Radio.Button
@@ -62,7 +73,6 @@ const FormExpenses = () => {
         <Form.Item
           label="Select date expenses"
           name="dateExpenses"
-          initialValue={moment()}
           rules={[
             {
               type: "object" as const,
@@ -82,11 +92,7 @@ const FormExpenses = () => {
           <InputNumber placeholder="Amount" type="number" style={styleComp} />
         </Form.Item>
 
-        <Form.Item
-          label="Description"
-          name="descriptionExpenses"
-          initialValue={null}
-        >
+        <Form.Item label="Description" name="descriptionExpenses">
           <Input placeholder="Description" style={styleComp} />
         </Form.Item>
 
