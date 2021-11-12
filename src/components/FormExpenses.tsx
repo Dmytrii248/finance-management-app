@@ -1,50 +1,12 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import moment, { Moment } from "moment";
+import React from "react";
+import moment from "moment";
 
 import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
 
-import SelectExpenses from "./SelectExpenses";
-
 const dateFormat = "DD-MM-YYYY";
-
-// доробити DatePicker(формат дати)
-// доробити onFinish
 
 const FormExpenses = () => {
   const [form] = Form.useForm();
-  // const [typeExpenses, setTypeExpenses] = useState("income");
-  // const [dateExpenses, setDateExpenses] = useState(moment().format(dateFormat));
-  // const [c, setAmountMoney] = useState<null | number>(null);
-  // const [descriptionExpenses, setDescriptionExpenses] = useState<null | string>(
-  //   null
-  // );
-
-  // const onChangeDatePicker = (date: Moment, dateString: string) => {
-  //   setDateExpenses(dateString);
-  // };
-
-  // const onChangeInputMoney = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = e.target;
-  //   setAmountMoney(+value);
-  // };
-
-  // const onChangeInputDescription = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = e.target;
-  //   setDescriptionExpenses(value);
-  // };
-
-  // const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log({
-  //     typeExpenses,
-  //     dateExpenses,
-  //     amountMoney,
-  //     descriptionExpenses,
-  //   });
-  //   setDateExpenses(moment().format(dateFormat));
-  //   setAmountMoney(null);
-  //   setDescriptionExpenses(null);
-  // };
 
   const onFinish = (fieldValues: any) => {
     const values = {
@@ -138,35 +100,6 @@ const FormExpenses = () => {
           </Button>
         </Form.Item>
       </Form>
-      {/* <form onSubmit={onSubmit}>
-      <SelectExpenses
-        typeExpenses={typeExpenses}
-        changeType={setTypeExpenses}
-      />
-      <DatePicker
-        defaultValue={moment(dateExpenses, dateFormat)}
-        value={moment(dateExpenses, dateFormat)}
-        format={dateFormat}
-        onChange={onChangeDatePicker}
-      />
-      <Input
-        type="number"
-        value={amountMoney}
-        onChange={onChangeInputMoney}
-        maxLength={25}
-        placeholder="Enter amount"
-        required
-      />
-      <Input
-        type="text"
-        placeholder="Description"
-        value={descriptionExpenses}
-        onChange={onChangeInputDescription}
-      />
-      <Button type="primary" htmlType="submit">
-        Send
-      </Button>
-    </form> */}
     </>
   );
 };
