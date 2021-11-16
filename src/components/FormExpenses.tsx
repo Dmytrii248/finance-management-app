@@ -1,6 +1,8 @@
 import React from "react";
 import moment, { Moment } from "moment";
 
+import Api from "../db/indexedDB";
+
 import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
 
 type FormValues = {
@@ -27,9 +29,11 @@ const FormExpenses = () => {
   const onFinish = (fieldValues: FormValues) => {
     const values = {
       ...fieldValues,
-      dateExpenses: fieldValues.dateExpenses.format(dateFormat),
+      dateExpenses: fieldValues.dateExpenses.toDate(),
+      amountMoney: +fieldValues.amountMoney,
     };
-    console.log(values);
+    Api.addObjToStore(values);
+    console.log("fields", values);
     form.setFieldsValue({ amountMoney: null, descriptionExpenses: null });
   };
 
