@@ -1,20 +1,13 @@
 import React from "react";
-import moment, { Moment } from "moment";
-
+import moment from "moment";
+import { FormValues } from "Constants/types";
 import Api from "../db/indexedDB";
 
 import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
 
-type FormValues = {
-  typeExpenses: string;
-  dateExpenses: Moment;
-  amountMoney: number;
-  descriptionExpenses: string | null;
-};
-
 const dateFormat = "DD-MM-YYYY";
 
-const FormExpenses = () => {
+const FormRecord = () => {
   const [form] = Form.useForm<FormValues>();
 
   const layout = {
@@ -29,44 +22,44 @@ const FormExpenses = () => {
   const onFinish = (fieldValues: FormValues) => {
     const values = {
       ...fieldValues,
-      dateExpenses: fieldValues.dateExpenses.toDate(),
-      amountMoney: +fieldValues.amountMoney,
+      dateRecord: fieldValues.dateRecord.toDate(),
+      amountMoney: Math.abs(+fieldValues.amountMoney),
     };
     Api.addObjToStore(values);
     console.log("fields", values);
-    form.setFieldsValue({ amountMoney: null, descriptionExpenses: null });
+    form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
   };
 
   return (
     <>
       <Form<FormValues>
         {...layout}
-        name="formExpenses"
+        name="formRecord"
         onFinish={onFinish}
         form={form}
         onFinishFailed={(errorInfo: any) =>
           console.log("Form not send", errorInfo)
         }
         initialValues={{
-          typeExpenses: "income",
-          dateExpenses: moment(),
+          typeRecord: "Income",
+          dateRecord: moment(),
           descriptionExpenses: null,
         }}
       >
         <Form.Item
-          label="Select type Expenses"
-          name="typeExpenses"
-          rules={[{ required: true, message: "Type Expenses is required" }]}
+          label="Select type Record"
+          name="typeRecord"
+          rules={[{ required: true, message: "Type Rocord is required" }]}
         >
           <Radio.Group>
             <Radio.Button
-              value="income"
+              value="Income"
               style={{ width: 100, textAlign: "center" }}
             >
               Income
             </Radio.Button>
             <Radio.Button
-              value="expenses"
+              value="Expenses"
               style={{ width: 100, textAlign: "center" }}
             >
               Expenses
@@ -75,8 +68,8 @@ const FormExpenses = () => {
         </Form.Item>
 
         <Form.Item
-          label="Select date expenses"
-          name="dateExpenses"
+          label="Select date record"
+          name="dateRecord"
           rules={[
             {
               type: "object" as const,
@@ -96,7 +89,7 @@ const FormExpenses = () => {
           <InputNumber placeholder="Amount" type="number" style={styleComp} />
         </Form.Item>
 
-        <Form.Item label="Description" name="descriptionExpenses">
+        <Form.Item label="Description" name="descriptionRecordF">
           <Input placeholder="Description" style={styleComp} />
         </Form.Item>
 
@@ -114,4 +107,4 @@ const FormExpenses = () => {
   );
 };
 
-export default FormExpenses;
+export default FormRecord;
