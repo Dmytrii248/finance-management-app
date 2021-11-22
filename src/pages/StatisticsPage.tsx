@@ -35,7 +35,11 @@ const StatisticsPage = () => {
       dataIndex: "",
       key: "x",
       render: (e: RecordType) => {
-        return <Button onClick={() => rmeoveNote(e.id)}>Remove</Button>;
+        return (
+          <Button danger onClick={() => rmeoveNote(e.id)}>
+            Remove
+          </Button>
+        );
       },
     },
   ];
@@ -64,7 +68,11 @@ const StatisticsPage = () => {
   useEffect(() => {}, [rmeoveNote]);
 
   return (
-    <Table columns={columns} dataSource={recordsData} pagination={false} />
+    <Table
+      columns={columns}
+      dataSource={recordsData?.reverse()}
+      pagination={false}
+    />
   );
 };
 
