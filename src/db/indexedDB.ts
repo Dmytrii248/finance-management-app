@@ -1,4 +1,5 @@
 import { RecordType } from "Constants/types";
+import moment from "moment";
 
 interface MyIDBVersionChangeEvent extends IDBVersionChangeEvent {
   target: IDBOpenDBRequest;
@@ -93,6 +94,7 @@ class Api {
         nameObjStore,
         "readonly"
       );
+
       transactionRead.oncomplete = () =>
         console.log("transaction read is complete");
       transactionRead.onerror = () => {
@@ -101,20 +103,31 @@ class Api {
       };
 
       const getObjectStore = transactionRead.objectStore(nameObjStore);
-      // const objectStoreRequest = getObjectStore.getAll();
+
+      const date = new Date();
+      const startMonth = moment(date).startOf("month").toDate();
+      const endMonth = moment(date).endOf("month").toDate();
+      const keyRangeValue = IDBKeyRange.bound(startMonth, endMonth, true, true);
 
       const getByIndex = getObjectStore.index(nameIndexStore);
-      const databyIndex = getByIndex.getAll();
+      const reqCursor = getByIndex.openCursor(keyRangeValue);
+      const arrEntries: RecordType[] = [];
 
-      databyIndex.onsuccess = (e) => {
-        console.log("Read is successfull");
-        res((e.target as IDBRequest).result);
+      reqCursor.onsuccess = (e) => {
+        const cursor: IDBCursorWithValue = (e.target as IDBRequest).result;
+        if (cursor) {
+          arrEntries.push(cursor.value);
+          cursor.continue();
+        } else {
+          console.log("Entries all displayed");
+          res(arrEntries);
+        }
       };
 
-      // objectStoreRequest.onsuccess = (e) => {
-      //   console.log("Read is successfull");
-      //   res((e.target as IDBRequest).result);
-      // };
+      reqCursor.onerror = () => {
+        console.log("request to cursor have error");
+        rej("request to cursor have error");
+      };
     });
   };
 

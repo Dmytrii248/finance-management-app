@@ -65,8 +65,6 @@ const StatisticsPage = () => {
     })();
   }, []);
 
-  useEffect(() => {}, [rmeoveNote]);
-
   return (
     <Table
       columns={columns}

@@ -24,6 +24,7 @@ const FormRecord = () => {
       ...fieldValues,
       dateRecord: fieldValues.dateRecord.toDate(),
       amountMoney: Math.abs(+fieldValues.amountMoney),
+      descriptionRecord: fieldValues.descriptionRecord || null,
     };
     Api.addObjToStore(values);
     console.log("fields", values);
@@ -89,7 +90,7 @@ const FormRecord = () => {
           <InputNumber placeholder="Amount" type="number" style={styleComp} />
         </Form.Item>
 
-        <Form.Item label="Description" name="descriptionRecordF">
+        <Form.Item label="Description" name="descriptionRecord">
           <Input placeholder="Description" style={styleComp} />
         </Form.Item>
 
