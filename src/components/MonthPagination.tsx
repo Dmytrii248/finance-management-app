@@ -22,11 +22,16 @@ const SButton = styled(Button)`
   margin: 0 5px;
 `;
 
+type typeProps = {
+  todayDate: Moment;
+  changeDate: (val: Moment) => void;
+};
+
 const selectYear = 2023;
 const selectPrevYear = 2015;
 
-const MonthPagination = () => {
-  const [todayDate, setTodayDate] = useState<Moment>(moment());
+const MonthPagination = (porps: typeProps) => {
+  const { todayDate, changeDate: setTodayDate } = porps;
 
   const reset = () => {
     setTodayDate(moment());

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RecordType } from "Constants/types";
 import { Table, Button } from "antd";
+import moment, { Moment } from "moment";
 
 import Api from "../db/indexedDB";
 
@@ -47,6 +48,7 @@ const StatisticsPage = () => {
   ];
 
   const [recordsData, setRecordsData] = useState(null);
+  const [fetchDate, setFetchDate] = useState<Moment>(moment());
 
   const rmeoveNote = async (id: number) => {
     const req = await Api.removeObjFromStore(id);
@@ -56,7 +58,7 @@ const StatisticsPage = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await Api.getObjFromStore();
+      const data = await Api.getObjFromStore(fetchDate.toDate());
       const newData = data.map((e) => ({
         ...e,
         dateRecord: e.dateRecord.toLocaleDateString("en-GB"),
@@ -65,11 +67,11 @@ const StatisticsPage = () => {
       }));
       setRecordsData(newData);
     })();
-  }, []);
+  }, [fetchDate]);
 
   return (
     <>
-      <MonthPagination />
+      <MonthPagination changeDate={setFetchDate} todayDate={fetchDate} />
       <Table
         columns={columns}
         dataSource={recordsData?.reverse()}

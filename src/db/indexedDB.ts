@@ -88,7 +88,7 @@ class Api {
     });
   };
 
-  getObjFromStore = (): Promise<RecordType[]> => {
+  getObjFromStore = (date: Date): Promise<RecordType[]> => {
     return new Promise(async (res, rej) => {
       const transactionRead = (await this.activeDB).transaction(
         nameObjStore,
@@ -104,7 +104,6 @@ class Api {
 
       const getObjectStore = transactionRead.objectStore(nameObjStore);
 
-      const date = new Date();
       const startMonth = moment(date).startOf("month").toDate();
       const endMonth = moment(date).endOf("month").toDate();
       const keyRangeValue = IDBKeyRange.bound(startMonth, endMonth, true, true);
