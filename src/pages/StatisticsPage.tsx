@@ -4,6 +4,8 @@ import { Table, Button } from "antd";
 
 import Api from "../db/indexedDB";
 
+import MonthPagination from "Components/MonthPagination";
+
 const StatisticsPage = () => {
   const columns = [
     {
@@ -66,11 +68,14 @@ const StatisticsPage = () => {
   }, []);
 
   return (
-    <Table
-      columns={columns}
-      dataSource={recordsData?.reverse()}
-      pagination={false}
-    />
+    <>
+      <MonthPagination />
+      <Table
+        columns={columns}
+        dataSource={recordsData?.reverse()}
+        pagination={false}
+      />
+    </>
   );
 };
 
