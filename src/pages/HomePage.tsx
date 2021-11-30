@@ -1,11 +1,11 @@
 import React from "react";
 
-import FormExpenses from "Components/FormExpenses";
+import FormRecord from "Components/FormRecord";
 
 const HomePage = () => {
   return (
     <>
-      <FormExpenses />
+      <FormRecord />
     </>
   );
 };
