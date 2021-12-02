@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { FormRecordValues } from "Constants/types";
+import { FormRecordValues, TagType } from "Constants/types";
 import { useGlobalContext } from "../store/GlobalContext";
 
-import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
+import {
+  Button,
+  DatePicker,
+  Input,
+  Form,
+  Radio,
+  InputNumber,
+  Select,
+} from "antd";
 
 const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
   const [form] = Form.useForm<FormRecordValues>();
-  const { recordCollection } = useGlobalContext();
+  const [tagsRecord, settagsRecord] = useState<TagType[]>(null);
+  const { recordCollection, tagCollection } = useGlobalContext();
+  const { Option } = Select;
 
   const layout = {
     labelCol: { span: 7 },
@@ -24,12 +34,21 @@ const FormRecord = () => {
     const values = {
       ...fieldValues,
       dateRecord: fieldValues.dateRecord.toDate(),
+      tagsRecord: fieldValues.tagsRecord.map((e) => +e),
       amountMoney: Math.abs(+fieldValues.amountMoney),
       descriptionRecord: fieldValues.descriptionRecord || null,
     };
     recordCollection.add(values);
     form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
   };
+
+  useEffect(() => {
+    (async () => {
+      const tags = await tagCollection.getAll();
+      console.log(tags);
+      settagsRecord(tags);
+    })();
+  }, []);
 
   return (
     <>
@@ -80,6 +99,26 @@ const FormRecord = () => {
           ]}
         >
           <DatePicker format={dateFormat} style={styleComp} />
+        </Form.Item>
+
+        <Form.Item
+          label="Select tag"
+          name="tagsRecord"
+          rules={[{ required: true, message: "Tag is required" }]}
+        >
+          <Select
+            mode="tags"
+            tokenSeparators={[","]}
+            allowClear
+            placeholder="Please select"
+            style={styleComp}
+          >
+            {tagsRecord?.map((e) => (
+              <Option key={e.id} value={e.id.toString()}>
+                {e.tagName}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item
