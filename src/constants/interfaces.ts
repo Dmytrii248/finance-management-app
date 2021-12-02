@@ -3,6 +3,7 @@ import { RecordType, TagType } from "./types";
 export interface ICollection<T> {
   add(item: T): Promise<T>;
   getAll(): Promise<T[]>;
+  getOne(id: number): Promise<T>;
   reomveById(id: number): Promise<T>;
 }
 

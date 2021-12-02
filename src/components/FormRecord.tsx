@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { FormValues } from "Constants/types";
+import { FormRecordValues } from "Constants/types";
 import { useGlobalContext } from "../store/GlobalContext";
 
 import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
@@ -8,7 +8,7 @@ import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
 const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
-  const [form] = Form.useForm<FormValues>();
+  const [form] = Form.useForm<FormRecordValues>();
   const { recordCollection } = useGlobalContext();
 
   const layout = {
@@ -20,7 +20,7 @@ const FormRecord = () => {
     width: 200,
   };
 
-  const onFinish = (fieldValues: FormValues) => {
+  const onFinish = (fieldValues: FormRecordValues) => {
     const values = {
       ...fieldValues,
       dateRecord: fieldValues.dateRecord.toDate(),
@@ -33,7 +33,7 @@ const FormRecord = () => {
 
   return (
     <>
-      <Form<FormValues>
+      <Form<FormRecordValues>
         {...layout}
         name="formRecord"
         onFinish={onFinish}
@@ -44,7 +44,7 @@ const FormRecord = () => {
         initialValues={{
           typeRecord: "Income",
           dateRecord: moment(),
-          descriptionExpenses: null,
+          descriptionRecord: null,
         }}
       >
         <Form.Item
