@@ -115,7 +115,7 @@ const FormRecord = () => {
           >
             {tagsRecord?.map((e) => (
               <Option key={e.id} value={e.id.toString()}>
-                {e.tagName}
+                {e.nameTag}
               </Option>
             ))}
           </Select>

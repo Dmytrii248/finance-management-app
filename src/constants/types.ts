@@ -20,7 +20,7 @@ export type RecordType = {
 };
 
 export type TagType = {
-  tagName: string;
+  nameTag: string;
   id?: number;
 };
 

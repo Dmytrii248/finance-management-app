@@ -15,8 +15,8 @@ const Tags = () => {
   const columns = [
     {
       title: "Tag",
-      dataIndex: "tagName",
-      key: "tagName",
+      dataIndex: "nameTag",
+      key: "nameTag",
     },
     {
       title: "Remove",
