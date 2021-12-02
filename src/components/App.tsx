@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 
-import Header from "Components/Header";
+import InitialApp from "./InitialApp";
+import Header from "./Header";
 import HomePage from "Pages/HomePage";
 import StatisticsPage from "Pages/StatisticsPage";
 import SettingsPage from "Pages/SettingsPage";
@@ -25,16 +26,18 @@ const Content = styled.div`
 const App = () => {
   return (
     <Router>
-      <Wrapper>
-        <Header />
-        <Content>
-          <Switch>
-            <Route path={homeLink} exact component={HomePage} />
-            <Route path={statisticsLink} component={StatisticsPage} />
-            <Route path={settingsLink} component={SettingsPage} />
-          </Switch>
-        </Content>
-      </Wrapper>
+      <InitialApp>
+        <Wrapper>
+          <Header />
+          <Content>
+            <Switch>
+              <Route path={homeLink} exact component={HomePage} />
+              <Route path={statisticsLink} component={StatisticsPage} />
+              <Route path={settingsLink} component={SettingsPage} />
+            </Switch>
+          </Content>
+        </Wrapper>
+      </InitialApp>
     </Router>
   );
 };
