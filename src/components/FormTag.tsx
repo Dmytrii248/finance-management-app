@@ -29,7 +29,7 @@ const FormTag = () => {
       initialValues={{ tagName: "" }}
     >
       <Form.Item
-        label="Tag name"
+        label="Create Tag"
         name="tagName"
         rules={[{ required: true, message: "Name is required" }]}
       >
