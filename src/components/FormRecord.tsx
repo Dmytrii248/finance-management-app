@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+
 import { FormRecordValues, TagType } from "Constants/types";
 import { useGlobalContext } from "../store/GlobalContext";
 
@@ -17,7 +18,7 @@ const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
   const [form] = Form.useForm<FormRecordValues>();
-  const [tagsRecord, settagsRecord] = useState<TagType[]>(null);
+  const [tagsRecord, setTagsRecord] = useState<TagType[]>(null);
   const { recordCollection, tagCollection } = useGlobalContext();
   const { Option } = Select;
 
@@ -45,8 +46,8 @@ const FormRecord = () => {
   useEffect(() => {
     (async () => {
       const tags = await tagCollection.getAll();
-      console.log(tags);
-      settagsRecord(tags);
+      console.log("tags", tags);
+      setTagsRecord(tags);
     })();
   }, []);
 

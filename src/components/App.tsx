@@ -6,7 +6,7 @@ import InitialApp from "./InitialApp";
 import Header from "./Header";
 import HomePage from "Pages/HomePage";
 import StatisticsPage from "Pages/StatisticsPage";
-import Tags from "Pages/Tags";
+import Tags from "Pages/TagsPage";
 
 import { homeLink, tagsLink, statisticsLink } from "Constants/links";
 
