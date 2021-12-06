@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import moment, { Moment } from "moment";
-import { Table, Button } from "antd";
 
 import MonthPagination from "Components/MonthPagination";
 
 import { useGlobalContext } from "../store/GlobalContext";
-
 import { nameIndexData } from "Constants/names";
 import { RecordType } from "Constants/types";
+
+import { Table, Button } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 
 const StatisticsPage = () => {
   const columns = [
@@ -36,9 +37,19 @@ const StatisticsPage = () => {
       key: "descriptionRecord",
     },
     {
+      title: "Edit",
+      dataIndex: "",
+      key: "x",
+      align: "center" as const,
+      render: () => (
+        <Button type="primary" ghost icon={<EditOutlined />} disabled />
+      ),
+    },
+    {
       title: "Remove",
       dataIndex: "",
       key: "x",
+      align: "center" as const,
       render: (e: RecordType) => {
         return (
           <Button danger onClick={() => rmeoveNote(e.id)}>
