@@ -8,7 +8,7 @@ import { nameIndexData } from "Constants/names";
 import { RecordType } from "Constants/types";
 
 import { Table, Button } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 
 const StatisticsPage = () => {
   const columns = [
@@ -52,9 +52,11 @@ const StatisticsPage = () => {
       align: "center" as const,
       render: (e: RecordType) => {
         return (
-          <Button danger onClick={() => rmeoveNote(e.id)}>
-            Remove
-          </Button>
+          <Button
+            danger
+            icon={<CloseOutlined />}
+            onClick={() => rmeoveNote(e.id)}
+          />
         );
       },
     },
