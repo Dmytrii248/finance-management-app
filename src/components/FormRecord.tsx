@@ -4,6 +4,8 @@ import moment from "moment";
 import { FormRecordValues, TagType } from "Constants/types";
 import { useGlobalContext } from "../store/GlobalContext";
 
+// import { FormInstance } from "antd/es/form";
+
 import {
   Button,
   DatePicker,
@@ -12,12 +14,15 @@ import {
   Radio,
   InputNumber,
   Select,
+  RadioChangeEvent,
 } from "antd";
 
 const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
   const [form] = Form.useForm<FormRecordValues>();
+  // const radioRef = useRef(null);// можливо получиться заюзати до радіо а поки буде юсСтейт
+  const [type, setType] = useState<string>("Income");
   const [tagsRecord, setTagsRecord] = useState<TagType[]>(null);
   const { recordCollection, tagCollection } = useGlobalContext();
   const { Option } = Select;
@@ -41,6 +46,11 @@ const FormRecord = () => {
     };
     recordCollection.add(values);
     form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
+  };
+
+  const onChangeType = (e: RadioChangeEvent) => {
+    setType(e.target.value);
+    form.setFieldsValue({ tagsRecord: undefined });
   };
 
   useEffect(() => {
@@ -72,7 +82,7 @@ const FormRecord = () => {
           name="typeRecord"
           rules={[{ required: true, message: "Type Rocord is required" }]}
         >
-          <Radio.Group>
+          <Radio.Group onChange={onChangeType}>
             <Radio.Button
               value="Income"
               style={{ width: 100, textAlign: "center" }}
@@ -114,11 +124,13 @@ const FormRecord = () => {
             placeholder="Please select"
             style={styleComp}
           >
-            {tagsRecord?.map((e) => (
-              <Option key={e.id} value={e.id.toString()}>
-                {e.nameTag}
-              </Option>
-            ))}
+            {tagsRecord
+              ?.filter((e) => e.typeTag === type)
+              .map((e) => (
+                <Option key={e.id} value={e.id.toString()}>
+                  {e.nameTag}
+                </Option>
+              ))}
           </Select>
         </Form.Item>
 
