@@ -4,7 +4,7 @@ import moment from "moment";
 import { FormRecordValues, TagType } from "Constants/types";
 import { useGlobalContext } from "../store/GlobalContext";
 
-// import { FormInstance } from "antd/es/form";
+import { handlerArrTagsId } from "../store/handlerArrTagsId";
 
 import {
   Button,
@@ -37,26 +37,34 @@ const FormRecord = () => {
   };
 
   const onFinish = (fieldValues: FormRecordValues) => {
-    const values = {
-      ...fieldValues,
-      dateRecord: fieldValues.dateRecord.toDate(),
-      tagsRecord: fieldValues.tagsRecord.map((e) => +e),
-      amountMoney: Math.abs(+fieldValues.amountMoney),
-      descriptionRecord: fieldValues.descriptionRecord || null,
-    };
-    recordCollection.add(values);
+    (async () => {
+      const newArrTagsId = await handlerArrTagsId(
+        fieldValues.idsTagsRecord,
+        fieldValues.typeRecord,
+        tagCollection
+      );
+
+      const values = {
+        ...fieldValues,
+        dateRecord: fieldValues.dateRecord.toDate(),
+        idsTagsRecord: newArrTagsId,
+        amountMoney: Math.abs(+fieldValues.amountMoney),
+        descriptionRecord: fieldValues.descriptionRecord || null,
+      };
+      recordCollection.add(values);
+    })();
+
     form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
   };
 
   const onChangeType = (e: RadioChangeEvent) => {
     setType(e.target.value);
-    form.setFieldsValue({ tagsRecord: undefined });
+    form.setFieldsValue({ idsTagsRecord: undefined });
   };
 
   useEffect(() => {
     (async () => {
       const tags = await tagCollection.getAll();
-      console.log("tags", tags);
       setTagsRecord(tags);
     })();
   }, []);
@@ -114,7 +122,7 @@ const FormRecord = () => {
 
         <Form.Item
           label="Select tag"
-          name="tagsRecord"
+          name="idsTagsRecord"
           rules={[{ required: true, message: "Tag is required" }]}
         >
           <Select
@@ -127,7 +135,7 @@ const FormRecord = () => {
             {tagsRecord
               ?.filter((e) => e.typeTag === type)
               .map((e) => (
-                <Option key={e.id} value={e.id.toString()}>
+                <Option key={e.id} value={`id:${e.id}`}>
                   {e.nameTag}
                 </Option>
               ))}

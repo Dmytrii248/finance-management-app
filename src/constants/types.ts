@@ -4,7 +4,7 @@ import { IRecordCollection, ITagCollection } from "./interfaces";
 export type FormRecordValues = {
   typeRecord: string;
   dateRecord: Moment;
-  tagsRecord: number[];
+  idsTagsRecord: number[];
   amountMoney: number;
   descriptionRecord: string | null;
 };
@@ -12,7 +12,7 @@ export type FormRecordValues = {
 export type RecordType = {
   typeRecord: string;
   dateRecord: Date;
-  tagsRecord: number[];
+  idsTagsRecord: number[];
   amountMoney: number;
   descriptionRecord: string | null;
   id?: number;
