@@ -36,25 +36,26 @@ const FormRecord = () => {
     width: 200,
   };
 
-  const onFinish = (fieldValues: FormRecordValues) => {
-    (async () => {
-      const newArrTagsId = await handlerArrTagsId(
-        fieldValues.idsTagsRecord,
-        fieldValues.typeRecord,
-        tagCollection
-      );
+  const onFinish = async (fieldValues: FormRecordValues) => {
+    const newArrTagsId = await handlerArrTagsId(
+      fieldValues.idsTagsRecord,
+      fieldValues.typeRecord,
+      tagCollection
+    );
+    const values = {
+      ...fieldValues,
+      dateRecord: fieldValues.dateRecord.toDate(),
+      idsTagsRecord: newArrTagsId,
+      amountMoney: Math.abs(+fieldValues.amountMoney),
+      descriptionRecord: fieldValues.descriptionRecord || null,
+    };
+    recordCollection.add(values);
 
-      const values = {
-        ...fieldValues,
-        dateRecord: fieldValues.dateRecord.toDate(),
-        idsTagsRecord: newArrTagsId,
-        amountMoney: Math.abs(+fieldValues.amountMoney),
-        descriptionRecord: fieldValues.descriptionRecord || null,
-      };
-      recordCollection.add(values);
-    })();
-
-    form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
+    form.setFieldsValue({
+      amountMoney: null,
+      descriptionRecord: null,
+      idsTagsRecord: newArrTagsId.map((id) => `id:${id}`),
+    });
   };
 
   const onChangeType = (e: RadioChangeEvent) => {

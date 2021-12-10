@@ -5,15 +5,14 @@ export const handlerArrTagsId = (
   typeTag: string,
   tagCollection: ITagCollection
 ): Promise<number[]> => {
-  const arrayPromiseDataTags = arrTagId
-    .filter((id) => !id.toString().startsWith("id:"))
-    .map(async (tagsId) => {
+  const arrayPromiseDataTags = arrTagId.map(async (tagsId) => {
+    if (!tagsId.toString().startsWith("id:")) {
       const createdTag = await tagCollection.add({
         typeTag: typeTag,
         nameTag: tagsId.toString(),
       });
       return createdTag.id;
-    });
-
+    } else return +tagsId.toString().slice(3);
+  });
   return Promise.all(arrayPromiseDataTags);
 };
