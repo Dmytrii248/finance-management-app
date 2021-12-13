@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { FormValues } from "Constants/types";
-import Api from "../db/indexedDB";
+import { useGlobalContext } from "../store/GlobalContext";
 
 import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
 
@@ -9,6 +9,7 @@ const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
   const [form] = Form.useForm<FormValues>();
+  const { recordCollection } = useGlobalContext();
 
   const layout = {
     labelCol: { span: 7 },
@@ -26,8 +27,7 @@ const FormRecord = () => {
       amountMoney: Math.abs(+fieldValues.amountMoney),
       descriptionRecord: fieldValues.descriptionRecord || null,
     };
-    Api.addObjToStore(values);
-    console.log("fields", values);
+    recordCollection.add(values);
     form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
   };
 

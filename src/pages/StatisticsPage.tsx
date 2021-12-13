@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { RecordType } from "Constants/types";
-import { Table, Button } from "antd";
 import moment, { Moment } from "moment";
-
-import Api from "../db/indexedDB";
+import { Table, Button } from "antd";
 
 import MonthPagination from "Components/MonthPagination";
+
+import { useGlobalContext } from "../store/GlobalContext";
+
+import { nameIndexData } from "Constants/names";
+import { RecordType } from "Constants/types";
 
 const StatisticsPage = () => {
   const columns = [
@@ -49,16 +51,20 @@ const StatisticsPage = () => {
 
   const [recordsData, setRecordsData] = useState(null);
   const [fetchDate, setFetchDate] = useState<Moment>(moment());
+  const { recordCollection } = useGlobalContext();
 
   const rmeoveNote = async (id: number) => {
-    const req = await Api.removeObjFromStore(id);
+    const removeRequest = await recordCollection.reomveById(id);
     setRecordsData(recordsData.filter((e: RecordType) => e.id !== id));
-    console.log("any", req);
+    console.log("Remove request is successful", removeRequest);
   };
 
   useEffect(() => {
     (async () => {
-      const data = await Api.getObjFromStore(fetchDate.toDate());
+      const data = await recordCollection.getbyDate(
+        fetchDate.toDate(),
+        nameIndexData
+      );
       const newData = data.map((e) => ({
         ...e,
         dateRecord: e.dateRecord.toLocaleDateString("en-GB"),
@@ -67,7 +73,7 @@ const StatisticsPage = () => {
       }));
       setRecordsData(newData);
     })();
-  }, [fetchDate]);
+  }, [fetchDate, recordCollection]);
 
   return (
     <>

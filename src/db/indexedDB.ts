@@ -56,16 +56,6 @@ class Api {
     });
   }
 
-  // createOBJStore = (nameObjStore: string) => {
-  //   this.activeDB.createObjectStore(nameObjStore, {
-  //     autoIncrement: true,
-  //   });
-  // };
-
-  // removeOBJStore = (nameOBJStore: string) => {
-  //   this.activeDB.deleteObjectStore(nameOBJStore);
-  // };
-
   addObjToStore = (dataRecord: RecordType): Promise<RecordType> => {
     return new Promise(async (res, rej) => {
       const transactionAdd = (await this.activeDB).transaction(
@@ -163,17 +153,6 @@ class Api {
   close = async () => {
     (await this.activeDB).close(); // роз'єднуємо бд і сервер
   };
-
-  // removeDB = () => { // not need maybe
-  //   console.log("In removeDB");
-  //   const removeRequest = window.indexedDB.deleteDatabase(name);
-  //   removeRequest.onerror = () => {
-  //     console.log("dataBase don't remove");
-  //   };
-  //   removeRequest.onsuccess = () => {
-  //     console.log("database succcess removed");
-  //   };
-  // };
 }
 
 export default new Api();
