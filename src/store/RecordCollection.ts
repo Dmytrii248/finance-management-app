@@ -7,7 +7,7 @@ export class RecordCollection
   extends DBCollection<RecordType>
   implements IRecordCollection
 {
-  getbyDate(date: Date, nameIndexStore: string): Promise<RecordType[]> {
+  getByDate(date: Date, nameIndexStore: string): Promise<RecordType[]> {
     return new Promise(async (res, rej) => {
       const transactionRead = this.db.transaction(this.nameStore, "readonly");
 

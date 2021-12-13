@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Layout } from "antd";
 
-import { settingsLink, homeLink, statisticsLink } from "Constants/links";
+import { tagsLink, homeLink, statisticsLink } from "Constants/links";
 
 const { Header: AntdHeader } = Layout;
 
@@ -20,7 +20,7 @@ const Header = () => {
     <AntdHeader>
       <SLink to={homeLink}>Home</SLink>
       <SLink to={statisticsLink}>Statistics</SLink>
-      <SLink to={settingsLink}>Settings</SLink>
+      <SLink to={tagsLink}>Tags</SLink>
     </AntdHeader>
   );
 };

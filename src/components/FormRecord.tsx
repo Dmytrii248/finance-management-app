@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
-import { FormValues } from "Constants/types";
+
+import { FormRecordValues, TagType } from "Constants/types";
+import { startValueIdInOption } from "Constants/anotherConstant";
 import { useGlobalContext } from "../store/GlobalContext";
 
-import { Button, DatePicker, Input, Form, Radio, InputNumber } from "antd";
+import {
+  Button,
+  DatePicker,
+  Input,
+  Form,
+  Radio,
+  InputNumber,
+  Select,
+  RadioChangeEvent,
+} from "antd";
 
 const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
-  const [form] = Form.useForm<FormValues>();
-  const { recordCollection } = useGlobalContext();
+  const [form] = Form.useForm<FormRecordValues>();
+  const [type, setType] = useState<string>("Income");
+  const [tagsRecord, setTagsRecord] = useState<TagType[]>(null);
+  const { recordCollection, tagCollection } = useGlobalContext();
+  const { Option } = Select;
 
   const layout = {
     labelCol: { span: 7 },
@@ -20,20 +34,51 @@ const FormRecord = () => {
     width: 200,
   };
 
-  const onFinish = (fieldValues: FormValues) => {
+  const onFinish = async (fieldValues: FormRecordValues) => {
+    const newArrTagsId = await Promise.all(
+      fieldValues.idsTagsRecord.map(async (tagsId) => {
+        if (!tagsId.toString().startsWith(startValueIdInOption)) {
+          const createdTag = await tagCollection.add({
+            typeTag: fieldValues.typeRecord,
+            nameTag: tagsId.toString(),
+          });
+          return createdTag.id;
+        } else return +tagsId.toString().slice(3);
+      })
+    );
+
     const values = {
       ...fieldValues,
       dateRecord: fieldValues.dateRecord.toDate(),
+      idsTagsRecord: newArrTagsId,
       amountMoney: Math.abs(+fieldValues.amountMoney),
       descriptionRecord: fieldValues.descriptionRecord || null,
     };
+
     recordCollection.add(values);
-    form.setFieldsValue({ amountMoney: null, descriptionRecord: null });
+
+    form.setFieldsValue({
+      amountMoney: null,
+      descriptionRecord: null,
+      idsTagsRecord: newArrTagsId.map((id) => `${startValueIdInOption}${id}`),
+    });
   };
+
+  const onChangeType = (e: RadioChangeEvent) => {
+    setType(e.target.value);
+    form.setFieldsValue({ idsTagsRecord: undefined });
+  };
+
+  useEffect(() => {
+    (async () => {
+      const tags = await tagCollection.getAll();
+      setTagsRecord(tags);
+    })();
+  }, []);
 
   return (
     <>
-      <Form<FormValues>
+      <Form<FormRecordValues>
         {...layout}
         name="formRecord"
         onFinish={onFinish}
@@ -44,7 +89,7 @@ const FormRecord = () => {
         initialValues={{
           typeRecord: "Income",
           dateRecord: moment(),
-          descriptionExpenses: null,
+          descriptionRecord: null,
         }}
       >
         <Form.Item
@@ -52,7 +97,7 @@ const FormRecord = () => {
           name="typeRecord"
           rules={[{ required: true, message: "Type Rocord is required" }]}
         >
-          <Radio.Group>
+          <Radio.Group onChange={onChangeType}>
             <Radio.Button
               value="Income"
               style={{ width: 100, textAlign: "center" }}
@@ -80,6 +125,28 @@ const FormRecord = () => {
           ]}
         >
           <DatePicker format={dateFormat} style={styleComp} />
+        </Form.Item>
+
+        <Form.Item
+          label="Select tag"
+          name="idsTagsRecord"
+          rules={[{ required: true, message: "Tag is required" }]}
+        >
+          <Select
+            mode="tags"
+            tokenSeparators={[","]}
+            allowClear
+            placeholder="Please select"
+            style={styleComp}
+          >
+            {tagsRecord
+              ?.filter((e) => e.typeTag === type)
+              .map((e) => (
+                <Option key={e.id} value={`${startValueIdInOption}${e.id}`}>
+                  {e.nameTag}
+                </Option>
+              ))}
+          </Select>
         </Form.Item>
 
         <Form.Item

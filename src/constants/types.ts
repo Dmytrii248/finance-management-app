@@ -1,9 +1,10 @@
 import { Moment } from "moment";
 import { IRecordCollection, ITagCollection } from "./interfaces";
 
-export type FormValues = {
+export type FormRecordValues = {
   typeRecord: string;
   dateRecord: Moment;
+  idsTagsRecord: number[];
   amountMoney: number;
   descriptionRecord: string | null;
 };
@@ -11,6 +12,7 @@ export type FormValues = {
 export type RecordType = {
   typeRecord: string;
   dateRecord: Date;
+  idsTagsRecord: number[];
   amountMoney: number;
   descriptionRecord: string | null;
   id?: number;
@@ -18,8 +20,9 @@ export type RecordType = {
 };
 
 export type TagType = {
-  name: string;
-  id: number;
+  typeTag: string;
+  nameTag: string;
+  id?: number;
 };
 
 export type GlobalContextType = {

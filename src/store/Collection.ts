@@ -47,6 +47,28 @@ export abstract class DBCollection<T> implements ICollection<T> {
     });
   }
 
+  getOne(id: number): Promise<T> {
+    return new Promise(async (res, rej) => {
+      const getOneTransaction = this.db.transaction(this.nameStore, "readonly");
+
+      getOneTransaction.oncomplete = () =>
+        console.log("Transaction getOne is complete");
+      getOneTransaction.onerror = (e) => {
+        console.log("Transaction getOne have error");
+        rej({ type: "Transaction Get One", error: e });
+      };
+
+      const objStore = getOneTransaction.objectStore(this.nameStore);
+      const request = objStore.get(id);
+
+      request.onerror = (e) => rej({ type: "Request getOne", error: e });
+      request.onsuccess = (e) => {
+        const result = (e.target as IDBRequest).result;
+        res(result);
+      };
+    });
+  }
+
   reomveById(id: number): Promise<T> {
     return new Promise(async (res, rej) => {
       const removeTransaction = (await this.db).transaction(

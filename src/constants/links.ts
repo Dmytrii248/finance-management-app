@@ -1,3 +1,3 @@
 export const homeLink = "/";
-export const settingsLink = "/settings";
+export const tagsLink = "/tags";
 export const statisticsLink = "/statistics";
