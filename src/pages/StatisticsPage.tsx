@@ -80,22 +80,20 @@ const StatisticsPage = () => {
   const { recordCollection, tagCollection } = useGlobalContext();
 
   const rmeoveNote = async (id: number) => {
-    const removeRequest = await recordCollection.reomveById(id);
+    await recordCollection.reomveById(id);
     setRecordsData(recordsData.filter((e: RecordType) => e.id !== id));
-    console.log("Remove request is successful", removeRequest);
   };
 
   useEffect(() => {
     (async () => {
       const tags = await tagCollection.getAll();
       setTags(tags);
-      console.log(await tagCollection.getOne(1));
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
-      const data = await recordCollection.getbyDate(
+      const data = await recordCollection.getByDate(
         fetchDate.toDate(),
         nameIndexData
       );

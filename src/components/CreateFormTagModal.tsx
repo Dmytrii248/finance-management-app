@@ -22,7 +22,6 @@ const CreateFormTagModal = (props: propsType) => {
       try {
         const fields = await form.validateFields();
         const newFields = await tagCollection.add(fields);
-        console.log("fields after validate and add to bd", newFields);
         onCreate(newFields);
 
         form.setFieldsValue({ nameTag: "" });

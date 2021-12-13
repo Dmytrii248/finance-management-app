@@ -53,9 +53,8 @@ const Tags = () => {
   const { tagCollection } = useGlobalContext();
 
   const removeTag = async (id: number) => {
-    const removeRequest = await tagCollection.reomveById(id);
+    await tagCollection.reomveById(id);
     setTagsData(tagsData.filter((e: TagType) => e.id !== id));
-    console.log("Remove request is successful", removeRequest);
   };
 
   const showModal = () => {
@@ -63,7 +62,6 @@ const Tags = () => {
   };
 
   const handleOkModal = (tag: TagType) => {
-    console.log("tag have in tagsPage", tag);
     setTagsData([...tagsData, { ...tag, key: tag.id }]);
     setIsModalVisible(false);
   };
@@ -72,7 +70,6 @@ const Tags = () => {
     (async () => {
       const data = await tagCollection.getAll();
       const newData = data.map((e) => ({ ...e, key: e.id }));
-      console.log(newData);
       setTagsData(newData);
     })();
   }, []);

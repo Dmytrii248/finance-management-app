@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 
 import { FormRecordValues, TagType } from "Constants/types";
+import { startValueIdInOption } from "Constants/anotherConstant";
 import { useGlobalContext } from "../store/GlobalContext";
-
-import { handlerArrTagsId } from "../store/handlerArrTagsId";
 
 import {
   Button,
@@ -21,7 +20,6 @@ const dateFormat = "DD-MM-YYYY";
 
 const FormRecord = () => {
   const [form] = Form.useForm<FormRecordValues>();
-  // const radioRef = useRef(null);// можливо получиться заюзати до радіо а поки буде юсСтейт
   const [type, setType] = useState<string>("Income");
   const [tagsRecord, setTagsRecord] = useState<TagType[]>(null);
   const { recordCollection, tagCollection } = useGlobalContext();
@@ -37,11 +35,18 @@ const FormRecord = () => {
   };
 
   const onFinish = async (fieldValues: FormRecordValues) => {
-    const newArrTagsId = await handlerArrTagsId(
-      fieldValues.idsTagsRecord,
-      fieldValues.typeRecord,
-      tagCollection
+    const newArrTagsId = await Promise.all(
+      fieldValues.idsTagsRecord.map(async (tagsId) => {
+        if (!tagsId.toString().startsWith(startValueIdInOption)) {
+          const createdTag = await tagCollection.add({
+            typeTag: fieldValues.typeRecord,
+            nameTag: tagsId.toString(),
+          });
+          return createdTag.id;
+        } else return +tagsId.toString().slice(3);
+      })
     );
+
     const values = {
       ...fieldValues,
       dateRecord: fieldValues.dateRecord.toDate(),
@@ -49,12 +54,13 @@ const FormRecord = () => {
       amountMoney: Math.abs(+fieldValues.amountMoney),
       descriptionRecord: fieldValues.descriptionRecord || null,
     };
+
     recordCollection.add(values);
 
     form.setFieldsValue({
       amountMoney: null,
       descriptionRecord: null,
-      idsTagsRecord: newArrTagsId.map((id) => `id:${id}`),
+      idsTagsRecord: newArrTagsId.map((id) => `${startValueIdInOption}${id}`),
     });
   };
 
@@ -136,7 +142,7 @@ const FormRecord = () => {
             {tagsRecord
               ?.filter((e) => e.typeTag === type)
               .map((e) => (
-                <Option key={e.id} value={`id:${e.id}`}>
+                <Option key={e.id} value={`${startValueIdInOption}${e.id}`}>
                   {e.nameTag}
                 </Option>
               ))}
