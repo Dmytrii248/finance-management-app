@@ -11,18 +11,18 @@ import Tags from "Pages/TagsPage";
 import { homeLink, tagsLink, statisticsLink } from "Constants/links";
 
 const Wrapper = styled.div`
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   max-width: 960px;
+  margin: 0 auto;
   height: 100vh;
-  color: #000;
 `;
 
 const Content = styled.div`
-  height: 100vh;
   background: #f2f2f2;
   padding: 15px;
+  flex: 1 1 auto;
 `;
-
 const App = () => {
   return (
     <Router>

@@ -17,27 +17,25 @@ const CreateFormTagModal = (props: propsType) => {
   const [form] = Form.useForm<TagType>();
   const { tagCollection } = useGlobalContext();
 
-  const handleOnOk = () => {
-    (async () => {
-      try {
-        const fields = await form.validateFields();
-        const newFields = await tagCollection.add(fields);
-        onCreate(newFields);
+  const handleOnOk = async () => {
+    try {
+      const fields = await form.validateFields();
+      const newFields = await tagCollection.add(fields);
+      onCreate(newFields);
 
-        form.setFieldsValue({ nameTag: "" });
-      } catch (e) {
-        console.log("Form tag not send", e);
-      }
-    })();
+      form.setFieldsValue({ nameTag: "" });
+    } catch (e) {
+      console.log("Form tag not send", e);
+    }
   };
 
   const layout = {
-    labelCol: { span: 7 },
-    wrapperCol: { span: 6 },
+    labelCol: { span: 9 },
+    wrapperCol: { span: 16 },
   };
 
   return (
-    <Modal visible={visible} onOk={handleOnOk} onCancel={onCansel}>
+    <Modal visible={visible} onOk={handleOnOk} onCancel={onCansel} width={448}>
       <Form<TagType>
         {...layout}
         name="formTag"
