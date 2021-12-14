@@ -79,7 +79,7 @@ const Tags = () => {
       <Button
         type="primary"
         onClick={showModal}
-        style={{ width: 200, margin: "auto" }}
+        style={{ display: "block", width: 200, margin: "0 auto" }}
       >
         Create Tag
       </Button>
@@ -90,7 +90,7 @@ const Tags = () => {
         onCansel={() => setIsModalVisible(false)}
       />
       <Table
-        style={{ width: 428, margin: "auto" }}
+        style={{ width: 428, margin: "20px auto" }}
         columns={columns}
         dataSource={tagsData}
         pagination={false}
