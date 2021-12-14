@@ -69,6 +69,41 @@ export abstract class DBCollection<T> implements ICollection<T> {
     });
   }
 
+  put(id: number, element: T): Promise<T> {
+    return new Promise(async (res, rej) => {
+      const putTransaction = this.db.transaction(this.nameStore, "readwrite");
+
+      putTransaction.oncomplete = () =>
+        console.log("Transaction put is complete");
+      putTransaction.onerror = (e) => {
+        console.log("Transaction put have error");
+        rej({ type: "Transaction Put", error: e });
+      };
+      const objStore = putTransaction.objectStore(this.nameStore);
+      const objStoreRequest = objStore.get(id);
+
+      objStoreRequest.onerror = () =>
+        console.log("Error in object store request");
+
+      objStoreRequest.onsuccess = (e) => {
+        const newData: T = (e.target as IDBRequest).result;
+
+        for (let prop in newData) {
+          if (newData[prop] !== element[prop]) newData[prop] = element[prop];
+        }
+
+        const updataData = objStore.put(newData);
+
+        updataData.onerror = () => console.log("Update data is unseccsess");
+
+        updataData.onsuccess = () => {
+          console.log("Updata data is succsess");
+          res(newData);
+        };
+      };
+    });
+  }
+
   reomveById(id: number): Promise<T> {
     return new Promise(async (res, rej) => {
       const removeTransaction = (await this.db).transaction(
