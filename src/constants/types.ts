@@ -23,6 +23,7 @@ export type TagType = {
   typeTag: string;
   nameTag: string;
   id?: number;
+  key?: number;
 };
 
 export type GlobalContextType = {

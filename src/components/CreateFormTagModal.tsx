@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useGlobalContext } from "../store/GlobalContext";
 import { TagType } from "Constants/types";
@@ -9,10 +9,16 @@ type propsType = {
   visible: boolean;
   onCreate: (values: TagType) => void;
   onCansel: () => void;
+  initialValue: TagType;
+};
+
+const layout = {
+  labelCol: { span: 9 },
+  wrapperCol: { span: 16 },
 };
 
 const CreateFormTagModal = (props: propsType) => {
-  const { visible, onCreate, onCansel } = props;
+  const { visible, onCreate, onCansel, initialValue } = props;
 
   const [form] = Form.useForm<TagType>();
   const { tagCollection } = useGlobalContext();
@@ -20,22 +26,43 @@ const CreateFormTagModal = (props: propsType) => {
   const handleOnOk = async () => {
     try {
       const fields = await form.validateFields();
-      const newFields = await tagCollection.add(fields);
-      onCreate(newFields);
-
-      form.setFieldsValue({ nameTag: "" });
+      if (initialValue) {
+        const oldTag = await tagCollection.put(initialValue.id, {
+          ...fields,
+          id: initialValue.id,
+        });
+        onCreate(oldTag);
+      } else {
+        const newTag = await tagCollection.add(fields);
+        onCreate(newTag);
+      }
+      form.resetFields();
     } catch (e) {
       console.log("Form tag not send", e);
     }
   };
 
-  const layout = {
-    labelCol: { span: 9 },
-    wrapperCol: { span: 16 },
+  const handleOnCansel = () => {
+    form.resetFields();
+    onCansel();
   };
 
+  useEffect(() => {
+    if (initialValue && form) {
+      form.setFieldsValue({
+        nameTag: initialValue.nameTag,
+        typeTag: initialValue.typeTag,
+      });
+    }
+  }, [initialValue]);
+
   return (
-    <Modal visible={visible} onOk={handleOnOk} onCancel={onCansel} width={448}>
+    <Modal
+      visible={visible}
+      onOk={handleOnOk}
+      onCancel={handleOnCansel}
+      width={448}
+    >
       <Form<TagType>
         {...layout}
         name="formTag"
