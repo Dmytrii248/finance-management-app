@@ -14,8 +14,10 @@ import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 const HomePage = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [tags, setTags] = useState<TagType[]>(null);
-  const [recordsData, setRecordsData] = useState(null);
+  const [recordsData, setRecordsData] = useState<RecordType[]>(null);
   const [fetchDate, setFetchDate] = useState<Moment>(moment());
+  const [initialValuesModal, setInitialValuesModal] =
+    useState<RecordType>(null);
   const { recordCollection, tagCollection } = useGlobalContext();
 
   const columns = [
@@ -37,6 +39,9 @@ const HomePage = () => {
       title: "Date",
       dataIndex: "dateRecord",
       key: "dateRecord",
+      render: (dateRecord: Date) => {
+        return <>{dateRecord.toLocaleDateString("en-GB")}</>;
+      },
     },
     {
       title: "Tags",
@@ -62,8 +67,13 @@ const HomePage = () => {
       dataIndex: "",
       key: "x",
       align: "center" as const,
-      render: () => (
-        <Button type="primary" ghost icon={<EditOutlined />} disabled />
+      render: (e: RecordType) => (
+        <Button
+          type="primary"
+          ghost
+          icon={<EditOutlined />}
+          onClick={() => showEditModal(e)}
+        />
       ),
     },
     {
@@ -85,18 +95,40 @@ const HomePage = () => {
     setIsShowModal(true);
   };
 
+  const showEditModal = (e: RecordType) => {
+    setInitialValuesModal(e);
+    setIsShowModal(true);
+  };
+
   const handleOkModal = (values: RecordType) => {
-    if (moment(values.dateRecord).month() === moment().month()) {
-      console.log(values.dateRecord, "set to arr");
-      setRecordsData([
-        ...recordsData,
-        {
-          ...values,
-          dateRecord: values.dateRecord.toLocaleDateString("en-GB"),
-          key: values.id,
-        },
-      ]);
+    if (moment(values.dateRecord).month() === fetchDate.month()) {
+      if (initialValuesModal) {
+        values.key = values.id;
+        const tempArrRecords = recordsData.slice();
+        const tempId = tempArrRecords.findIndex((e) => e.id === values.id);
+        tempArrRecords[tempId] = values;
+        setRecordsData(tempArrRecords);
+      } else {
+        setRecordsData([
+          ...recordsData,
+          {
+            ...values,
+            dateRecord: values.dateRecord,
+            key: values.id,
+          },
+        ]);
+      }
+    } else {
+      const tempArrRecords = recordsData.slice();
+      const tempId = tempArrRecords.findIndex((e) => e.id === values.id);
+      tempArrRecords.splice(tempId, 1);
+      setRecordsData(tempArrRecords);
     }
+    setIsShowModal(false);
+  };
+
+  const handleCanselModal = () => {
+    initialValuesModal ? setInitialValuesModal(null) : null;
     setIsShowModal(false);
   };
 
@@ -120,7 +152,7 @@ const HomePage = () => {
       );
       const newData = data.map((e) => ({
         ...e,
-        dateRecord: e.dateRecord.toLocaleDateString("en-GB"),
+        dateRecord: e.dateRecord,
         key: e.id,
       }));
       setRecordsData(newData);
@@ -141,14 +173,15 @@ const HomePage = () => {
         <FormRecordModal
           visible={isShowModal}
           onCreate={handleOkModal}
-          onCansel={() => setIsShowModal(false)}
+          onCansel={handleCanselModal}
+          initialValue={initialValuesModal}
         />
       </div>
       <div>
         <MonthPagination changeDate={setFetchDate} todayDate={fetchDate} />
         <Table
           columns={columns}
-          dataSource={recordsData?.reverse()}
+          dataSource={recordsData?.slice().reverse()}
           pagination={false}
         />
       </div>
