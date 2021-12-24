@@ -51,6 +51,8 @@ const webpackConfig = {
     historyApiFallback: true,
   },
 
+  devtool: "source-map",
+
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {

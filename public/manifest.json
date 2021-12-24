@@ -1,0 +1,44 @@
+{
+  "short_name": "Money management",
+  "name": "Application for money management",
+  "icons": [
+    {
+      "src": "/icons/icon-96-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-120-120.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-144-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-180-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-256-256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#000000",
+  "background_color": "#3367D6",
+
+  "description": "Management your money"
+}
