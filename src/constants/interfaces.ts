@@ -4,6 +4,7 @@ export interface ICollection<T> {
   add(item: T): Promise<T>;
   getAll(): Promise<T[]>;
   getOne(id: number): Promise<T>;
+  put(id: number, element: T): Promise<T>;
   reomveById(id: number): Promise<T>;
 }
 

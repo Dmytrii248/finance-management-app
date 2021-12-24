@@ -9,6 +9,11 @@ import { Table, Button } from "antd";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 
 const Tags = () => {
+  const [tagsData, setTagsData] = useState<TagType[]>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [initialValuesModal, setInitialValuesModal] = useState<TagType>(null);
+  const { tagCollection } = useGlobalContext();
+
   const columns = [
     {
       title: "Tag",
@@ -29,8 +34,13 @@ const Tags = () => {
       dataIndex: "",
       key: "x",
       align: "center" as const,
-      render: () => (
-        <Button type="primary" ghost icon={<EditOutlined />} disabled />
+      render: (e: TagType) => (
+        <Button
+          type="primary"
+          ghost
+          icon={<EditOutlined />}
+          onClick={() => showEditModal(e)}
+        />
       ),
     },
     {
@@ -48,10 +58,6 @@ const Tags = () => {
     },
   ];
 
-  const [tagsData, setTagsData] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const { tagCollection } = useGlobalContext();
-
   const removeTag = async (id: number) => {
     await tagCollection.reomveById(id);
     setTagsData(tagsData.filter((e: TagType) => e.id !== id));
@@ -61,8 +67,26 @@ const Tags = () => {
     setIsModalVisible(true);
   };
 
+  const showEditModal = (e: TagType) => {
+    setInitialValuesModal(e);
+    setIsModalVisible(true);
+  };
+
   const handleOkModal = (tag: TagType) => {
-    setTagsData([...tagsData, { ...tag, key: tag.id }]);
+    if (initialValuesModal) {
+      const tempArrTags = tagsData.slice();
+      const tmepIndexTag = tempArrTags.findIndex((e) => e.id === tag.id);
+      tag.key = tag.id;
+      tempArrTags[tmepIndexTag] = tag;
+      setTagsData(tempArrTags);
+    } else {
+      setTagsData([...tagsData, { ...tag, key: tag.id }]);
+    }
+    setIsModalVisible(false);
+  };
+
+  const handleCanselModal = () => {
+    initialValuesModal ? setInitialValuesModal(null) : null;
     setIsModalVisible(false);
   };
 
@@ -87,7 +111,8 @@ const Tags = () => {
       <CreateFormTagModal
         visible={isModalVisible}
         onCreate={handleOkModal}
-        onCansel={() => setIsModalVisible(false)}
+        onCansel={handleCanselModal}
+        initialValue={initialValuesModal}
       />
       <Table
         style={{ width: 428, margin: "20px auto" }}
