@@ -51,7 +51,7 @@ const HomePage = () => {
         <>
           {tagsId.map((tagId) => (
             <Tag key={tagId}>
-              {tags.find((tag) => tag.id === tagId).nameTag.toUpperCase()}
+              {tags.find((tag) => tag.id === tagId)?.nameTag.toUpperCase()}
             </Tag>
           ))}
         </>
@@ -117,6 +117,7 @@ const HomePage = () => {
             key: values.id,
           },
         ]);
+        getTagsData();
       }
     } else {
       const tempArrRecords = recordsData.slice();
@@ -137,11 +138,13 @@ const HomePage = () => {
     setRecordsData(recordsData.filter((e: RecordType) => e.id !== id));
   };
 
+  const getTagsData = async () => {
+    const tagsData = await tagCollection.getAll();
+    setTags(tagsData);
+  };
+
   useEffect(() => {
-    (async () => {
-      const tags = await tagCollection.getAll();
-      setTags(tags);
-    })();
+    getTagsData();
   }, []);
 
   useEffect(() => {
