@@ -3,6 +3,26 @@ import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../store/GlobalContext";
 
 import { Pie } from "@antv/g2plot";
+import styled from "styled-components";
+
+const WrapperStatistic = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 20px;
+`;
+
+const InfoColumn = styled.div`
+  margin-right: 5px;
+`;
+
+const ValueColumb = styled.div`
+  margin-left: 10px;
+`;
+
+const green = { color: "green" };
+const red = { color: "red" };
+const black = { color: "black" };
 
 const StatisticsPage = () => {
   const { recordCollection } = useGlobalContext();
@@ -58,9 +78,18 @@ const StatisticsPage = () => {
   return (
     <>
       <div id="container"></div>
-      <div style={{ color: "green" }}>Income: {store.income}</div>
-      <div style={{ color: "red" }}>Expenses: {store.expenses}</div>
-      <div style={{ color: "black" }}>Total: {store.total}</div>
+      <WrapperStatistic>
+        <InfoColumn>
+          <div style={green}>Income:</div>
+          <div style={red}>Expenses:</div>
+          <div style={black}>Total:</div>
+        </InfoColumn>
+        <ValueColumb>
+          <div style={green}>{store.income}</div>
+          <div style={red}>{store.expenses}</div>
+          <div style={black}>{store.total}</div>
+        </ValueColumb>
+      </WrapperStatistic>
     </>
   );
 };
