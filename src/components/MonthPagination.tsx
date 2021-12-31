@@ -13,13 +13,14 @@ import styled from "styled-components";
 const WrapperPagination = styled.div`
   display: flex;
   padding: 5px;
+  flex-wrap: wrap;
   margin-bottom: 10px;
   justify-content: center;
   align-items: center;
 `;
 
 const SButton = styled(Button)`
-  margin: 0 5px;
+  margin: 5px;
 `;
 
 type typeProps = {
