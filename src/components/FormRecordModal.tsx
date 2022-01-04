@@ -83,6 +83,7 @@ const FormRecordModal = (props: propsType) => {
         onCreate(newRecord);
       }
 
+      setType("Income");
       form.resetFields();
     } catch (e) {
       console.log("Form record not send", e);
