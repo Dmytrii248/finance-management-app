@@ -182,11 +182,13 @@ const HomePage = () => {
       </div>
       <div>
         <MonthPagination changeDate={setFetchDate} todayDate={fetchDate} />
-        <Table
-          columns={columns}
-          dataSource={recordsData?.slice().reverse()}
-          pagination={false}
-        />
+        <div style={{ overflowY: "hidden", backgroundColor: "white" }}>
+          <Table
+            columns={columns}
+            dataSource={recordsData?.slice().reverse()}
+            pagination={false}
+          />
+        </div>
       </div>
     </>
   );

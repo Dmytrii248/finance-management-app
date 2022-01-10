@@ -114,12 +114,20 @@ const Tags = () => {
         onCansel={handleCanselModal}
         initialValue={initialValuesModal}
       />
-      <Table
-        style={{ width: 428, margin: "20px auto" }}
-        columns={columns}
-        dataSource={tagsData}
-        pagination={false}
-      />
+      <div
+        style={{
+          overflowY: "hidden",
+          backgroundColor: "white",
+          marginTop: "20px",
+        }}
+      >
+        <Table
+          style={{ width: 428, margin: "20px auto" }}
+          columns={columns}
+          dataSource={tagsData}
+          pagination={false}
+        />
+      </div>
     </>
   );
 };
