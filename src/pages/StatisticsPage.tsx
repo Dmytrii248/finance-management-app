@@ -1,12 +1,32 @@
 import React, { useEffect, useState } from "react";
 
 import { useGlobalContext } from "../store/GlobalContext";
-import { RecordType } from "Constants/types";
+
+import { Pie } from "@antv/g2plot";
+import styled from "styled-components";
+
+const WrapperStatistic = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 20px;
+`;
+
+const InfoColumn = styled.div`
+  margin-right: 5px;
+`;
+
+const ValueColumb = styled.div`
+  margin-left: 10px;
+`;
+
+const green = { color: "green" };
+const red = { color: "red" };
+const black = { color: "black" };
 
 const StatisticsPage = () => {
   const { recordCollection } = useGlobalContext();
 
-  const [data, setData] = useState<RecordType[]>(null);
   const [store, setStore] = useState({
     income: null,
     expenses: null,
@@ -16,7 +36,7 @@ const StatisticsPage = () => {
   useEffect(() => {
     (async () => {
       const fetchData = await recordCollection.getAll();
-      setData(fetchData);
+      console.log(fetchData);
       let income = 0,
         expenses = 0,
         total = 0;
@@ -30,14 +50,46 @@ const StatisticsPage = () => {
         expenses: expenses,
         total: total,
       });
+
+      const piePlot = new Pie("container", {
+        appendPadding: 10,
+        data: [
+          { type: "Income", value: income },
+          { type: "Expenses", value: expenses },
+        ],
+        angleField: "value",
+        colorField: "type",
+        radius: 0.75,
+        label: {
+          type: "spider",
+          labelHeight: 28,
+          content: "{name}\n{percentage}",
+        },
+        interactions: [
+          { type: "element-selected" },
+          { type: "element-active" },
+        ],
+      });
+
+      piePlot.render();
     })();
   }, []);
 
   return (
     <>
-      <div>Income:{store.income}</div>
-      <div>Expenses:{store.expenses}</div>
-      <div>Total:{store.total}</div>
+      <div id="container"></div>
+      <WrapperStatistic>
+        <InfoColumn>
+          <div style={green}>Income:</div>
+          <div style={red}>Expenses:</div>
+          <div style={black}>Total:</div>
+        </InfoColumn>
+        <ValueColumb>
+          <div style={green}>{store.income}</div>
+          <div style={red}>{store.expenses}</div>
+          <div style={black}>{store.total}</div>
+        </ValueColumb>
+      </WrapperStatistic>
     </>
   );
 };
