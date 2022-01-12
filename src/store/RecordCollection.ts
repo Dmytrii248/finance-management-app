@@ -7,7 +7,11 @@ export class RecordCollection
   extends DBCollection<RecordType>
   implements IRecordCollection
 {
-  getByDate(date: Date, nameIndexStore: string): Promise<RecordType[]> {
+  getByDate(
+    date: Date,
+    nameIndexStore: string,
+    fetchBy: "month" | "year"
+  ): Promise<RecordType[]> {
     return new Promise(async (res, rej) => {
       const transactionRead = this.db.transaction(this.nameStore, "readonly");
 
@@ -20,9 +24,14 @@ export class RecordCollection
 
       const objStore = transactionRead.objectStore(this.nameStore);
 
-      const startMonth = moment(date).startOf("month").toDate();
-      const endMonth = moment(date).endOf("month").toDate();
-      const keyRangeValue = IDBKeyRange.bound(startMonth, endMonth, true, true);
+      const startFetchDate = moment(date).startOf(fetchBy).toDate();
+      const endFetchDate = moment(date).endOf(fetchBy).toDate();
+      const keyRangeValue = IDBKeyRange.bound(
+        startFetchDate,
+        endFetchDate,
+        true,
+        true
+      );
 
       const getByIndex = objStore.index(nameIndexStore);
       const reqCursor = getByIndex.openCursor(keyRangeValue);

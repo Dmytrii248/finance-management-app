@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import moment, { Moment } from "moment";
+
+import MonthPagination from "Components/MonthPagination";
 
 import { useGlobalContext } from "../store/GlobalContext";
+import { nameIndexData } from "Constants/names";
 
 import { Pie } from "@antv/g2plot";
 import styled from "styled-components";
@@ -32,11 +36,17 @@ const StatisticsPage = () => {
     expenses: null,
     total: null,
   });
+  const [fetchDate, setFetchDate] = useState<Moment>(moment());
+  const [selectedMode, setSelectedMode] = useState<"month" | "year">("month");
 
   useEffect(() => {
     (async () => {
-      const fetchData = await recordCollection.getAll();
-      console.log(fetchData);
+      const fetchData = await recordCollection.getByDate(
+        fetchDate.toDate(),
+        nameIndexData,
+        selectedMode
+      );
+
       let income = 0,
         expenses = 0,
         total = 0;
@@ -50,6 +60,8 @@ const StatisticsPage = () => {
         expenses: expenses,
         total: total,
       });
+
+      document.getElementById("container").innerHTML = "";
 
       const piePlot = new Pie("container", {
         appendPadding: 10,
@@ -73,10 +85,17 @@ const StatisticsPage = () => {
 
       piePlot.render();
     })();
-  }, []);
+  }, [fetchDate, selectedMode]);
 
   return (
     <>
+      <MonthPagination
+        changeDate={setFetchDate}
+        todayDate={fetchDate}
+        switchMode={true}
+        setSelectedMode={setSelectedMode}
+      />
+
       <div id="container"></div>
       <WrapperStatistic>
         <InfoColumn>
