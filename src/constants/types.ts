@@ -30,3 +30,8 @@ export type GlobalContextType = {
   recordCollection: IRecordCollection;
   tagCollection: ITagCollection;
 };
+
+export type ElementDataMoneyShowType = {
+  type: string;
+  value: number;
+};

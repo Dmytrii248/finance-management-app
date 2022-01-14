@@ -12,9 +12,8 @@ import styled from "styled-components";
 
 const WrapperPagination = styled.div`
   display: flex;
-  padding: 5px;
+  padding: 10px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
   justify-content: center;
   align-items: center;
 `;
@@ -81,54 +80,61 @@ const MonthPagination: React.FC<typeProps> = (props) => {
   }, [todayDate]);
 
   return (
-    <WrapperPagination>
-      {(isSwapToYear === null || isSwapToYear) && (
-        <SButton
-          name="prevYear"
-          onClick={prevYear}
-          disabled={objDisButtons.prevYear}
+    <>
+      <WrapperPagination>
+        {(isSwapToYear === null || isSwapToYear) && (
+          <SButton
+            name="prevYear"
+            onClick={prevYear}
+            disabled={objDisButtons.prevYear}
+          >
+            <DoubleLeftOutlined />
+            {moment(todayDate).subtract(1, "y").format("YYYY")}
+          </SButton>
+        )}
+        {!isSwapToYear && (
+          <SButton onClick={prevMonth} disabled={objDisButtons.prevMonth}>
+            <LeftOutlined />
+            {moment(todayDate).subtract(1, "M").format("MMM")}
+          </SButton>
+        )}
+        <Tooltip
+          placement="top"
+          title={
+            isSwapToYear === null
+              ? null
+              : isSwapToYear
+              ? "Click to swap to Month"
+              : "Click to swap to Year"
+          }
         >
-          <DoubleLeftOutlined />
-          {moment(todayDate).subtract(1, "y").format("YYYY")}
-        </SButton>
+          <SButton onClick={onClickCentreButton} style={{ height: "auto" }}>
+            {isSwapToYear === null
+              ? todayDate.format("MMMM YYYY")
+              : isSwapToYear
+              ? todayDate.format("YYYY")
+              : todayDate.format("MMMM")}
+          </SButton>
+        </Tooltip>
+        {!isSwapToYear && (
+          <SButton onClick={forwardMonth} disabled={objDisButtons.forwardMonth}>
+            {moment(todayDate).add(1, "M").format("MMM")}
+            <RightOutlined />
+          </SButton>
+        )}
+        {(isSwapToYear === null || isSwapToYear) && (
+          <SButton onClick={forwardYear} disabled={objDisButtons.forwardYear}>
+            {moment(todayDate).add(1, "y").format("YYYY")}
+            <DoubleRightOutlined />
+          </SButton>
+        )}
+      </WrapperPagination>
+      {switchMode && (
+        <WrapperPagination style={{ padding: "0px" }}>
+          <Button onClick={reset}>Back to Today</Button>
+        </WrapperPagination>
       )}
-      {!isSwapToYear && (
-        <SButton onClick={prevMonth} disabled={objDisButtons.prevMonth}>
-          <LeftOutlined />
-          {moment(todayDate).subtract(1, "M").format("MMM")}
-        </SButton>
-      )}
-      <Tooltip
-        placement="top"
-        title={
-          isSwapToYear === null
-            ? null
-            : isSwapToYear
-            ? "Click to swap to Month"
-            : "Click to swap to Year"
-        }
-      >
-        <SButton onClick={onClickCentreButton} style={{ height: "auto" }}>
-          {isSwapToYear === null
-            ? todayDate.format("MMMM YYYY")
-            : isSwapToYear
-            ? todayDate.format("YYYY")
-            : todayDate.format("MMMM")}
-        </SButton>
-      </Tooltip>
-      {!isSwapToYear && (
-        <SButton onClick={forwardMonth} disabled={objDisButtons.forwardMonth}>
-          {moment(todayDate).add(1, "M").format("MMM")}
-          <RightOutlined />
-        </SButton>
-      )}
-      {(isSwapToYear === null || isSwapToYear) && (
-        <SButton onClick={forwardYear} disabled={objDisButtons.forwardYear}>
-          {moment(todayDate).add(1, "y").format("YYYY")}
-          <DoubleRightOutlined />
-        </SButton>
-      )}
-    </WrapperPagination>
+    </>
   );
 };
 
