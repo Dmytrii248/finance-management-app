@@ -32,6 +32,6 @@ export type GlobalContextType = {
 };
 
 export type ElementDataMoneyShowType = {
-  type: string;
+  type: string | string[];
   value: number;
 };

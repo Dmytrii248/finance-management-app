@@ -9,7 +9,16 @@ type propsType = {
 };
 
 const PiePlotCustom: React.FC<propsType> = (props) => {
-  const dataConfig = props.arrData;
+  const dataConfig =
+    props.arrData.length === 0
+      ? [{ type: "", value: 0 }]
+      : props.arrData.map((element: ElementDataMoneyShowType) => {
+          if (typeof element.type === "string") {
+            return element;
+          } else {
+            return { ...element, type: (element.type as string[]).join(", ") };
+          }
+        });
 
   const pieDataConfig = useMemo(() => {
     return {
@@ -19,8 +28,8 @@ const PiePlotCustom: React.FC<propsType> = (props) => {
       colorField: "type",
       radius: 0.75,
       label: {
-        type: "spider",
-        labelHeight: 28,
+        type: "outer",
+        labelHeight: 30,
         content: "{name}\n{percentage}",
       },
       interactions: [{ type: "element-selected" }, { type: "element-active" }],
