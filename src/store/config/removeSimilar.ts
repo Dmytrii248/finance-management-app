@@ -4,10 +4,7 @@ import { isEqualArrays } from "./equalsArrays";
 export const removeSimilar = (array: RecordType[]): RecordType[] => {
   const arr = [...array];
 
-  const callbackFn: (acc: RecordType[], value: RecordType) => RecordType[] = (
-    acc,
-    value
-  ) => {
+  const callbackFn = (acc: RecordType[], value: RecordType): RecordType[] => {
     if (
       acc.find((el) => isEqualArrays(el.idsTagsRecord, value.idsTagsRecord))
     ) {
