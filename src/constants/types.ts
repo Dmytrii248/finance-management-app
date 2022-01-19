@@ -35,3 +35,8 @@ export type ElementDataMoneyShowType = {
   type: string | string[];
   value: number;
 };
+
+export type ElementBeforePieType = {
+  type: number;
+  value: number;
+};

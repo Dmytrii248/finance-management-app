@@ -1,16 +1,20 @@
-import { RecordType, TagType } from "Constants/types";
+import { ElementBeforePieType, RecordType, TagType } from "Constants/types";
 
 export const transformObjectsForPie = (
-  arr: RecordType[],
+  arr: RecordType[] | ElementBeforePieType[],
   tagsData: TagType[]
 ) => {
-  return arr.map((el: RecordType) => {
+  return arr.map((el: RecordType & ElementBeforePieType) => {
+    const type = el?.type
+      ? tagsData.find((tag) => tag.id === el.type).nameTag
+      : el.idsTagsRecord.map(
+          (idTag: number) =>
+            tagsData.find((tag: TagType) => tag.id === idTag).nameTag
+        );
+    const value = el?.type ? el.value : el.amountMoney;
     return {
-      type: el.idsTagsRecord.map(
-        (idTag: number) =>
-          tagsData.find((tag: TagType) => tag.id === idTag).nameTag
-      ),
-      value: el.amountMoney,
+      type: type,
+      value: value,
     };
   });
 };

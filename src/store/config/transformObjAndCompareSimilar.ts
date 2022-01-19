@@ -1,27 +1,21 @@
-import { RecordType } from "Constants/types";
-
-type ElementType = {
-  type: number;
-  value: number;
-};
+import { ElementBeforePieType, RecordType } from "Constants/types";
 
 export const transformObjAndCompareSimilar = (array: RecordType[]) => {
-  const arr = [...array];
-  console.log("arr in fn compare", arr);
-
-  const callbackFn = (acc: ElementType[], value: RecordType): ElementType[] => {
-    const tempAcc = [...acc];
+  const callbackFn = (
+    acc: ElementBeforePieType[],
+    value: RecordType
+  ): ElementBeforePieType[] => {
     value.idsTagsRecord.forEach((tagId) => {
-      if (tempAcc.find((el) => el.type === tagId)) {
-        tempAcc[tempAcc.findIndex((el) => el.type === tagId)].value +=
-          value.amountMoney;
+      const foundIndex = acc.findIndex((el) => el.type === tagId);
+      if (foundIndex !== -1) {
+        acc[foundIndex].value += value.amountMoney;
       } else {
-        tempAcc.push({ type: tagId, value: value.amountMoney });
+        acc.push({ type: tagId, value: value.amountMoney });
       }
     });
 
-    return tempAcc;
+    return acc;
   };
 
-  return arr.reduce(callbackFn, []);
+  return array.reduce(callbackFn, []);
 };

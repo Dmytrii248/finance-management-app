@@ -2,21 +2,16 @@ import { RecordType } from "Constants/types";
 import { isEqualArrays } from "./equalsArrays";
 
 export const removeSimilar = (array: RecordType[]): RecordType[] => {
-  const arr = [...array];
-
   const callbackFn = (acc: RecordType[], value: RecordType): RecordType[] => {
-    if (
-      acc.find((el) => isEqualArrays(el.idsTagsRecord, value.idsTagsRecord))
-    ) {
-      acc[
-        acc.findIndex((el) =>
-          isEqualArrays(el.idsTagsRecord, value.idsTagsRecord)
-        )
-      ].amountMoney += value.amountMoney;
-      return acc;
+    const foundIndex = acc.findIndex((el) =>
+      isEqualArrays(el.idsTagsRecord, value.idsTagsRecord)
+    );
+    if (foundIndex !== -1) {
+      acc[foundIndex].amountMoney += value.amountMoney;
     } else {
-      return [...acc, value];
+      acc.push({ ...value });
     }
+    return acc;
   };
-  return arr.reduce(callbackFn, []);
+  return array.reduce(callbackFn, []);
 };
