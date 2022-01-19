@@ -16,7 +16,10 @@ const PiePlotCustom: React.FC<propsType> = (props) => {
           if (typeof element.type === "string") {
             return element;
           } else {
-            return { ...element, type: (element.type as string[]).join(", ") };
+            return {
+              ...element,
+              type: element.type.join(", "),
+            };
           }
         });
 
