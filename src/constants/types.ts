@@ -30,3 +30,13 @@ export type GlobalContextType = {
   recordCollection: IRecordCollection;
   tagCollection: ITagCollection;
 };
+
+export type ElementDataMoneyShowType = {
+  type: string | string[];
+  value: number;
+};
+
+export type ElementBeforePieType = {
+  type: number;
+  value: number;
+};

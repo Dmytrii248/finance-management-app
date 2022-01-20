@@ -13,7 +13,11 @@ export interface MyIDBVersionChangeEvent extends IDBVersionChangeEvent {
 }
 
 export interface IRecordCollection extends ICollection<RecordType> {
-  getByDate(date: Date, nameIndexStore: string): Promise<RecordType[]>;
+  getByDate(
+    date: Date,
+    nameIndexStore: string,
+    fetchBy: "month" | "year"
+  ): Promise<RecordType[]>;
 }
 
 export interface ITagCollection extends ICollection<TagType> {}

@@ -151,7 +151,8 @@ const HomePage = () => {
     (async () => {
       const data = await recordCollection.getByDate(
         fetchDate.toDate(),
-        nameIndexData
+        nameIndexData,
+        "month"
       );
       const newData = data.map((e) => ({
         ...e,
