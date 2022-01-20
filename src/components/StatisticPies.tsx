@@ -6,7 +6,7 @@ import { transformObjectsForPie } from "../store/config/transformObjectsForPie";
 import { transformObjAndCompareSimilar } from "../store/config/transformObjAndCompareSimilar";
 import { RecordType } from "Constants/types";
 
-import PiePlotCustom from "./PiePlotCustom";
+import PiesForReccords from "./PiesForReccords";
 
 import styled from "styled-components";
 import { Button } from "antd";
@@ -96,9 +96,9 @@ const StatisticPies: React.FC<propsType> = (props) => {
         <Button onClick={changeModePies}>Change Mode Pies</Button>
       </div>
       <Sspan>Income</Sspan>
-      <PiePlotCustom arrData={incomeData} />
+      <PiesForReccords arrData={incomeData} />
       <Sspan>Expenses</Sspan>
-      <PiePlotCustom arrData={expensesData} />
+      <PiesForReccords arrData={expensesData} />
     </div>
   );
 };

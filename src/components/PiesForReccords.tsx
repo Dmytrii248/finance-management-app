@@ -8,11 +8,11 @@ type propsType = {
   arrData: ElementDataMoneyShowType[];
 };
 
-const PiePlotCustom: React.FC<propsType> = (props) => {
-  const dataConfig =
-    props.arrData.length === 0
+const PiesForReccords: React.FC<propsType> = ({ arrData }) => {
+  const dataConfig = useMemo(() => {
+    return arrData.length === 0
       ? [{ type: "", value: 0 }]
-      : props.arrData.map((element: ElementDataMoneyShowType) => {
+      : arrData.map((element: ElementDataMoneyShowType) => {
           if (typeof element.type === "string") {
             return element;
           } else {
@@ -22,24 +22,23 @@ const PiePlotCustom: React.FC<propsType> = (props) => {
             };
           }
         });
+  }, [arrData]);
 
-  const pieDataConfig = useMemo(() => {
-    return {
-      appendPadding: 10,
-      data: dataConfig,
-      angleField: "value",
-      colorField: "type",
-      radius: 0.75,
-      label: {
+  return (
+    <Pie
+      data={dataConfig}
+      appendPadding={10}
+      angleField="value"
+      colorField="type"
+      radius={0.75}
+      label={{
         type: "outer",
         labelHeight: 30,
         content: "{name}\n{percentage}",
-      },
-      interactions: [{ type: "element-selected" }, { type: "element-active" }],
-    };
-  }, [dataConfig]);
-
-  return <Pie {...pieDataConfig} />;
+      }}
+      interactions={[{ type: "element-selected" }, { type: "element-active" }]}
+    />
+  );
 };
 
-export default PiePlotCustom;
+export default PiesForReccords;
