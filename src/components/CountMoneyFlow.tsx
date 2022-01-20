@@ -84,14 +84,12 @@ const CountMoneyFlow: React.FC<propsType> = (props) => {
           <div style={black}>{store.total}</div>
         </ValueColumb>
       </WrapperStatistic>
-      {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
       <Button
         style={{ display: "block", margin: "20px auto" }}
         onClick={toggleDiagram}
       >
         {isShowDiagram ? "Hide Diagram" : "Show Diagram"}
       </Button>
-      {/* </div> */}
     </>
   );
 };

@@ -117,7 +117,6 @@ const Tags = () => {
       <div
         style={{
           overflowY: "hidden",
-          backgroundColor: "white",
           marginTop: "20px",
         }}
       >
