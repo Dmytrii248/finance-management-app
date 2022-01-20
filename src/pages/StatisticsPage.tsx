@@ -24,12 +24,12 @@ const StatisticsPage = () => {
 
   useEffect(() => {
     (async () => {
-      const fetchData = await recordCollection.getByDate(
+      const fetchedData = await recordCollection.getByDate(
         fetchDate.toDate(),
         nameIndexData,
         selectedMode
       );
-      setRecorddata(fetchData);
+      setRecorddata(fetchedData);
     })();
   }, [fetchDate, selectedMode]);
 

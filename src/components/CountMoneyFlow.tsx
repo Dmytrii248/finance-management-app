@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import PiePlotCustom from "./PiePlotCustom";
+import PiesForReccords from "./PiesForReccords";
 
 import { ElementDataMoneyShowType } from "Constants/types";
 
@@ -65,7 +65,7 @@ const CountMoneyFlow: React.FC<propsType> = (props) => {
   return (
     <>
       {isShowDiagram && (
-        <PiePlotCustom
+        <PiesForReccords
           arrData={[
             { type: "Income", value: store.income },
             { type: "Expenses", value: store.expenses },

@@ -9,7 +9,8 @@ export const transformObjectsForPie = (
       ? tagsData.find((tag) => tag.id === el.type).nameTag
       : el.idsTagsRecord.map(
           (idTag: number) =>
-            tagsData.find((tag: TagType) => tag.id === idTag).nameTag
+            tagsData.find((tag: TagType) => tag.id === idTag)?.nameTag ??
+            "NOTFOUND"
         );
     const value = el?.type ? el.value : el.amountMoney;
     return {
