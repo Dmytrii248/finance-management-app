@@ -17,7 +17,7 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const CreateFormTagModal = (props: propsType) => {
+const FormTagModal = (props: propsType) => {
   const { visible, onCreate, onCansel, initialValue } = props;
 
   const [form] = Form.useForm<TagType>();
@@ -103,4 +103,4 @@ const CreateFormTagModal = (props: propsType) => {
   );
 };
 
-export default CreateFormTagModal;
+export default FormTagModal;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import CreateFormTagModal from "Components/CreateFormTagModal";
+import FormTagModal from "Components/FormTagModal";
 
 import { TagType } from "Constants/types";
 import { useGlobalContext } from "../store/GlobalContext";
@@ -112,7 +112,7 @@ const Tags = () => {
         Create Tag
       </Button>
 
-      <CreateFormTagModal
+      <FormTagModal
         visible={isModalVisible}
         onCreate={handleOkModal}
         onCansel={handleCanselModal}
