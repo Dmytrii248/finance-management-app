@@ -85,26 +85,20 @@ export abstract class DBCollection<T> implements ICollection<T> {
       objStoreRequest.onerror = () =>
         console.log("Error in object store request");
 
-      objStoreRequest.onsuccess = (e) => {
-        const newData: T = (e.target as IDBRequest).result;
-
-        for (let prop in newData) {
-          if (newData[prop] !== element[prop]) newData[prop] = element[prop];
-        }
-
-        const updataData = objStore.put(newData);
+      objStoreRequest.onsuccess = () => {
+        const updataData = objStore.put(element);
 
         updataData.onerror = () => console.log("Update data is unseccsess");
 
         updataData.onsuccess = () => {
           console.log("Updata data is succsess");
-          res(newData);
+          res(element);
         };
       };
     });
   }
 
-  reomveById(id: number): Promise<T> {
+  removeById(id: number): Promise<T> {
     return new Promise(async (res, rej) => {
       const removeTransaction = (await this.db).transaction(
         this.nameStore,

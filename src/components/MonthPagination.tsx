@@ -35,7 +35,7 @@ type typeProps = {
 };
 
 const selectYear = new Date().getFullYear() + numberOfAvailableYearsToFuture;
-const selectPrevYear = new Date().getFullYear() + numberOfAvailableYearsToPast;
+const selectPrevYear = new Date().getFullYear() - numberOfAvailableYearsToPast;
 
 const MonthPagination: React.FC<typeProps> = (props) => {
   const {

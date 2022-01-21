@@ -59,11 +59,12 @@ const Tags = () => {
   ];
 
   const removeTag = async (id: number) => {
-    await tagCollection.reomveById(id);
+    await tagCollection.removeById(id);
     setTagsData(tagsData.filter((e: TagType) => e.id !== id));
   };
 
   const showModal = () => {
+    setInitialValuesModal(null);
     setIsModalVisible(true);
   };
 
@@ -93,7 +94,10 @@ const Tags = () => {
   useEffect(() => {
     (async () => {
       const data = await tagCollection.getAll();
-      const newData = data.map((e) => ({ ...e, key: e.id }));
+      const newData = data.map((e) => {
+        e.key = e.id;
+        return e;
+      });
       setTagsData(newData);
     })();
   }, []);

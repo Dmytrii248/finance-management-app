@@ -134,7 +134,7 @@ const HomePage = () => {
   };
 
   const removeNote = async (id: number) => {
-    await recordCollection.reomveById(id);
+    await recordCollection.removeById(id);
     setRecordsData(recordsData.filter((e: RecordType) => e.id !== id));
   };
 
@@ -154,11 +154,10 @@ const HomePage = () => {
         nameIndexData,
         "month"
       );
-      const newData = data.map((e) => ({
-        ...e,
-        dateRecord: e.dateRecord,
-        key: e.id,
-      }));
+      const newData = data.map((e) => {
+        e.key = e.id;
+        return e;
+      });
       setRecordsData(newData);
     })();
   }, [fetchDate, recordCollection]);

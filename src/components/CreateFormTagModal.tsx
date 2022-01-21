@@ -27,10 +27,8 @@ const CreateFormTagModal = (props: propsType) => {
     try {
       const fields = await form.validateFields();
       if (initialValue) {
-        const oldTag = await tagCollection.put(initialValue.id, {
-          ...fields,
-          id: initialValue.id,
-        });
+        fields.id = initialValue.id;
+        const oldTag = await tagCollection.put(initialValue.id, fields);
         onCreate(oldTag);
       } else {
         const newTag = await tagCollection.add(fields);

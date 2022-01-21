@@ -60,7 +60,7 @@ const FormRecordModal = (props: propsType) => {
       });
       const newArrTagsId = await Promise.all(tempArrTagsId);
 
-      const recordValues = {
+      const recordValues: RecordType = {
         ...fieldsForm,
         dateRecord: fieldsForm.dateRecord.toDate(),
         idsTagsRecord: newArrTagsId,
@@ -69,14 +69,11 @@ const FormRecordModal = (props: propsType) => {
       };
 
       if (initialValue) {
-        const oldRecord = await recordCollection.put(initialValue.id, {
-          ...initialValue,
-          typeRecord: recordValues.typeRecord,
-          dateRecord: recordValues.dateRecord,
-          idsTagsRecord: recordValues.idsTagsRecord,
-          amountMoney: recordValues.amountMoney,
-          descriptionRecord: recordValues.descriptionRecord,
-        });
+        recordValues.id = initialValue.id;
+        const oldRecord = await recordCollection.put(
+          initialValue.id,
+          recordValues
+        );
         onCreate(oldRecord);
       } else {
         const newRecord = await recordCollection.add(recordValues);
